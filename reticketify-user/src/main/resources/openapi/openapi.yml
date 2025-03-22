@@ -1,0 +1,54 @@
+openapi: 3.0.4
+info:
+  title: ReTicketify User - OpenAPI 3.0
+  description: |-
+    ReTicketify User
+  version: 0.0.1-SNAPSHOT
+servers:
+  - url: http://localhost:8080/api/v1
+tags:
+  - name: user
+    description: Operations about user
+paths:
+  /user:
+    post:
+      tags:
+        - user
+      summary: Create ReTicketify User
+      operationId: createUser
+      requestBody:
+        description: Created User Object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: successful operation
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 10
+        username:
+          type: string
+          example: theUser
+        password:
+          type: string
+          example: '12345'
+        name:
+          type: string
+          example: John
+        cpf:
+          type: string
+          example: John
+        email:
+          type: string
+          example: john@email.com
+        phone:
+          type: string
+          example: '12345'
