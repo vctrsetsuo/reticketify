@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: reticketify-backend-user
+  profiles:
+    active: local
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+server:
+  port: 8080
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/user
+    username: app
+    password: app
+    minimum-pool-size: 5
+    maximum-pool-size: 10
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://reticketify-db-user:3306/user
+    username: app
+    password: app
+    minimum-pool-size: 5
+    maximum-pool-size: 10
