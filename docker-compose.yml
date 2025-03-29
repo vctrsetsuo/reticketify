@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   reticketify-backend-user:
     image: reticketify-backend-user:0.0.1-SNAPSHOT
@@ -10,12 +8,16 @@ services:
     ports:
       - "8080:8080"  # Mapeamento da porta (host:container)
     environment:
-      SPRING_PROFILES_ACTIVE: docker  # Define o perfil ativo do Spring, se necessário
+      - SPRING_PROFILES_ACTIVE=docker  # Define o perfil ativo do Spring, se necessário
+      - WEBHOOK_URL
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 25
     depends_on:
       reticketify-db-user:   # Garantir que o banco de dados esteja iniciado antes da aplicação
         condition: service_healthy
-    networks:
-      - app-network-user
+    network_mode: host
 
   reticketify-db-user:
     image: reticketify-db-user:latest
@@ -27,17 +29,25 @@ services:
       test: mysql --user=$$MYSQL_USER --password=$$MYSQL_PASSWORD -e 'SHOW DATABASES;'
       interval: 10s
       timeout: 5s
-      retries: 30
+      retries: 100
     ports:
       - "3306:3306"  # Porta do banco de dados
     volumes:
       - db-data-user:/var/lib/mysql
-    networks:
-      - app-network-user
-
-networks:
-  app-network-user:  # Definição da rede compartilhada entre os serviços
-    driver: bridge
+    network_mode: host
+  
+  reticketify-frontend-spa-heroui:
+    image: reticketify-frontend-spa-heroui:latest
+    container_name: reticketify-frontend-spa-heroui
+    build:
+      context: ./reticketify-frontend-spa-heroui
+      network: host
+    ports:
+      - "3000:3000"
+    depends_on:
+      reticketify-db-user:   # Garantir que o banco de dados esteja iniciado antes da aplicação
+        condition: service_started
+    network_mode: host
 
 volumes:
   db-data-user: # Volume persistente para os dados do banco de dados

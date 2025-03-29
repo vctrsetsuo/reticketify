@@ -10,11 +10,6 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .info(new Info()
-                        .title("ReTicketify User - OpenAPI 3.0")
-                        .version("0.0.1-SNAPSHOT")
-                        .description("ReTicketify User")
-                );
+        return new OpenAPI();
     }
 }

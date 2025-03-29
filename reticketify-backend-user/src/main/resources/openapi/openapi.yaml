@@ -9,6 +9,8 @@ servers:
 tags:
   - name: user
     description: Operations about user
+  - name: login
+    description: Operations about login
 paths:
   /user:
     post:
@@ -21,10 +23,86 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserData'
       responses:
         '201':
           description: successful operation
+    put:
+      tags:
+        - user
+      summary: Update ReTicketify User
+      operationId: updateUser
+      requestBody:
+        description: Update User Object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /user/{id}:
+    get:
+      tags:
+        - user
+      summary: Get ReTicketify User
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: ReTicketify User Id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - user
+      summary: Delete ReTicketify User
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          description: ReTicketify User Id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: successful operation
+  /login:
+    post:
+      tags:
+        - login
+      summary: Login User
+      operationId: loginUser
+      requestBody:
+        description: Login User
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
 
 components:
   schemas:
@@ -32,8 +110,11 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
           example: 10
+        uuid:
+          type: string
+          example: 'f91a1345-a590-460f-ae55-475a8fb6bbdc'
         username:
           type: string
           example: theUser
@@ -50,5 +131,35 @@ components:
           type: string
           example: john@email.com
         phone:
+          type: string
+          example: '12345'
+    UserData:
+      type: object
+      properties:
+        username:
+          type: string
+          example: theUser
+        password:
+          type: string
+          example: '12345'
+        name:
+          type: string
+          example: John
+        cpf:
+          type: string
+          example: John
+        email:
+          type: string
+          example: john@email.com
+        phone:
+          type: string
+          example: '12345'
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+          example: theUser
+        password:
           type: string
           example: '12345'

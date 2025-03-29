@@ -1,11 +1,21 @@
 #!/bin/bash
 
-DOCKERCOMPOSECURRENTRELEASENUMBER="$(curl -4 -k --http2 https://github.com/docker/compose/releases | grep -m1 '<a href="/docker/compose/releases/download/' | awk -F/ '{print $6}')"
+echo
+docker --version
 
-if [[ ! -f /usr/local/bin/docker-compose ]]; then
-    curl -L "https://github.com/docker/compose/releases/download/"$DOCKERCOMPOSECURRENTRELEASENUMBER"/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
-    ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
-fi
-
+echo
 docker-compose --version
+
+echo
+echo "Digite a URL para o Webhook:"
+read valor
+
+# Definindo a variável
+export WEBHOOK_URL=$valor
+
+# Confirmando
+echo
+echo "WEBHOOK_URL foi definida como: $WEBHOOK_URL"
+
+echo
+docker-compose up -d
