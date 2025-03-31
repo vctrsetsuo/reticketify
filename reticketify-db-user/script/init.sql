@@ -1,0 +1,12 @@
+USE user;
+
+CREATE TABLE users (
+	id 			INT 			AUTO_INCREMENT	PRIMARY KEY,
+	uuid 		VARCHAR(36) 	NOT NULL,
+	username	VARCHAR(20)		NOT NULL	UNIQUE,
+    password    VARCHAR(100)	NOT NULL,
+    cpf			VARCHAR(11)		NOT NULL	UNIQUE,
+	name		VARCHAR(150)	NOT NULL,
+	email		VARCHAR(150)	NOT NULL	UNIQUE,
+    phone		VARCHAR(13)		NOT NULL
+);
